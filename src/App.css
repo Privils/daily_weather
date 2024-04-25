@@ -127,13 +127,12 @@ form button{
     color: white;
     display: flex;
     justify-content: space-around;
+    align-items: center;
   }
   .mainSection{
     width: 700px;
     height: fit-content;
-    margin: 10px;
-    background-image: linear-gradient(150deg, rgb(27, 50, 228) 0%, rgb(21, 195, 248));
-    margin-left: 20px;
+    background-image: linear-gradient(150deg, rgba(13, 38, 226, 0.874) 0%, rgb(0, 195, 255));
   }
   
   .Town{
@@ -255,20 +254,6 @@ form button{
 
 
 @media (max-width: 534px) {
-  body{
-    width: 100%;
-    background: rgb(19, 19, 19);
-    color: white;
-    display: flex;
-    justify-content: space-around;
-  }
-  .mainSection{
-    width: 700px;
-    height: fit-content;
-    margin: 10px;
-    background-image: linear-gradient(150deg, rgb(27, 50, 228) 0%, rgb(21, 195, 248));
-    margin-left: 20px;
-  }
   
   .Town{
     padding: 16px;
