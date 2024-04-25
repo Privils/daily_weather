@@ -121,38 +121,26 @@ form button{
 }
 /*mobile designs*/
 @media (max-width: 800px) {
-  body{
-   display: flex;
-   justify-content: center;
-   place-content: center;
-  }
   .mainSection{
     width: 100%;
     height: fit-content;
     border-radius: 40px;
-    background-image: linear-gradient(150deg, rgb(11, 17, 74) 0%, rgb(25, 145, 183));
+    background-image: linear-gradient(150deg, rgb(13, 31, 192) 0%, rgb(60, 207, 251));
  
   }
   
   .Town{
     text-align: center;
     padding: 25px;
-    font-size: 4rem;
-    font-weight: 600;
-    text-transform: capitalize;
+    font-size: 1.5rem;
+    font-weight:400;
   }
   .initialTemp{
     text-align: center;
     margin-bottom: 30px;
-    font-size: 4rem;
+    font-size: 1.3rem;
     font-weight: 600;
     text-transform: capitalize;
-  }
-  .initialIcon{
-    width: 100%;
-    height: fit-content;
-    display: flex;
-    justify-content: center;
   }
   .iconContainer{
     height: 300px;
@@ -179,59 +167,33 @@ form button{
     height: fit-content;
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
   }
   
   .Tempweather{
     display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    position: relative;
-    width: 240px;
-    height: 450px;
-    margin: 10px;
-    border: 2px solid black;
-    border-radius: 15px;
-    box-shadow: 5px 5px 5px rgba(90, 88, 88, 0.7);
+    justify-content: space-between;
+    width: 700px;
+    height: fit-content;
+    border-radius: 5px;
+    box-shadow: 8px 10px 13px rgb(0, 0, 0);
   }
   .time , .lowerTemp{
-    width: 100%;
-    font-size: 2rem;
-    text-align: center;
-    text-transform: capitalize;
-    margin-top: 10px;
-    margin-bottom: 10px;
+    font-size:18px;
   }
   #form{
-    position: relative;
-    width: 100%;
-    height: 200px;
-    display: flex;
-    place-content: center;
-    align-items: center;
-    margin-top: 10px;
-    border-bottom-left-radius: 30px;
-    border-bottom-right-radius: 30px;
+    height: 100px;
   }
   .input{
-  width: 600px;
-  height: auto;
-  padding: 5px;
-  font-size: 2em;
-  text-transform: capitalize;
-  border-radius: 10px;
-  border: none;
+  width: 400px;
+  height: fit-content;
+  padding: 3px;
+  font-size: 16px;
+  border-radius: 5px;
   }
   form button{
-    margin-left: 5px;
-    padding: 5px;
-    background-color: white;
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    color: black;
-    font-size: 2em;
-    text-align: center;
+    width: 30px;
+    height: 30px;
+    font-size: 16px;
   }
 }
 @media (max-width: 0px) {
