@@ -1,38 +1,309 @@
-.App {
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+body{
+  width: 100%;
+ background: black;
+ color: white;
+ display: flex;
+ justify-content: center;
+ place-content: center;
+}
+.mainSection{
+  width: 100%;
+  height: fit-content;
+  border-radius: 40px;
+  background-image: linear-gradient(150deg, rgb(11, 17, 74) 0%, rgb(25, 145, 183));
+  position: relative;
+
+}
+
+.Town{
+  text-align: center;
+  padding: 25px;
+  font-size: 4rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.initialTemp{
+  text-align: center;
+  margin-bottom: 30px;
+  font-size: 4rem;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+.initialIcon{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: center;
+}
+.iconContainer{
+  height: 300px;
+  width: 300px;
+}
+img{
+  width: 100%;
+}
+.bottomContent{
+  width: 100%;
+  height: fit-content;
+}
+.plusContainer, .daysContainer{
+  width: 100%;
+  height: fit-content;
+ display: flex;
+ justify-content: center;
+}
+.days{
+  display: none;
+}
+.moreWeather{
+  width: 100%;
+  height: fit-content;
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.Tempweather{
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  position: relative;
+  width: 240px;
+  height: 450px;
+  margin: 10px;
+  border: 2px solid black;
+  border-radius: 15px;
+  box-shadow: 5px 5px 5px rgba(90, 88, 88, 0.7);
+}
+.time , .lowerTemp{
+  width: 100%;
+  font-size: 2rem;
+  text-align: center;
+  text-transform: capitalize;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+#form{
+  position: relative;
+  width: 100%;
+  height: 200px;
+  display: flex;
+  place-content: center;
+  align-items: center;
+  margin-top: 10px;
+  border-bottom-left-radius: 30px;
+  border-bottom-right-radius: 30px;
+}
+.input{
+width: 600px;
+height: auto;
+padding: 5px;
+font-size: 2em;
+text-transform: capitalize;
+border-radius: 10px;
+border: none;
+}
+form button{
+  margin-left: 5px;
+  padding: 5px;
+  background-color: white;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  color: black;
+  font-size: 2em;
   text-align: center;
 }
+/*mobile designs*/
+@media (max-width: 826px) {
+  body{
+    width: 100%;
+    background: rgb(19, 19, 19);
+    color: white;
+    display: flex;
+    justify-content: space-around;
+  }
+  .mainSection{
+    width: 700px;
+    height: fit-content;
+    margin: 10px;
+    background-image: linear-gradient(150deg, rgb(27, 50, 228) 0%, rgb(21, 195, 248));
+    margin-left: 20px;
+  }
+  
+  .Town{
+    padding: 16px;
+    font-size: 2.5rem;
+  }
+  .initialTemp{
+    padding: 16px;
+    font-size: 2.5rem;
+  }
+  img{
+    width: 100%;
+  }
+  .bottomContent{
+    width: 100%;
+    height: fit-content;
+  }
+  .plusContainer{
+    width: 100%;
+    height: fit-content;
+   display: flex;
+   justify-content: center;
+  }
+  .moreWeather{
+    width: 100%;
+    height: fit-content;
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    place-content: center;
+  }
+  .weather{
+    width: 100%;
+   margin: 5px;
+   display: flex;
+   justify-content: center;
 
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
+  }
+  .Tempweather{
+    width: 90%;
+    height: fit-content;
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: nowrap;
+    border-bottom: 3px solid black;
+    box-shadow: 8px 10px 13px black;
+  }
+  .iconImage{
+    width: 100px;
+    height: 100px;
+  }
+  .time , .lowerTemp{
+    font-size: 2rem;
+  }
+  #form{
+    position: relative;
+    width: 100%;
+    height: 150px;
+    display: flex;
+    place-content: center;
+    align-items: center;
+    margin-top: 20px;
+    border-bottom-left-radius: 30px;
+    border-bottom-right-radius: 30px;
+  }
+  .input{
+  width: 400px;
+  font-size: 1.2em;
+  border-radius: 5px;
+  }
+  form button{
+    padding: 5px;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    font-size: 1.2em;
   }
 }
+@media (max-width: 700px) {
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+  
+  .Town{
+    padding: 16px;
+    font-size: 3.8rem;
+  }
+  img{
+    width: 100%;
+  }
+  .iconImage{
+    width: 120px;
+    height: 120px;
+  }
+  .time , .lowerTemp{
+    font-size: 2rem;
+  }
+  .input{
+  width: 500px;
+  font-size: 1.8em;
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  margin: 5px;
+  }
+  form button{
+    width: 60px;
+    height: 60px;
+    font-size: 1.9em;
+  }
+  
+.Tempweather{
+  width: 90%;
+  height: fit-content;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(22, 21, 21, 0.4);
+}
 }
 
-.App-link {
-  color: #61dafb;
-}
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+@media (max-width: 534px) {
+  body{
+    width: 100%;
+    background: rgb(19, 19, 19);
+    color: white;
+    display: flex;
+    justify-content: space-around;
   }
-  to {
-    transform: rotate(360deg);
+  .mainSection{
+    width: 700px;
+    height: fit-content;
+    margin: 10px;
+    background-image: linear-gradient(150deg, rgb(27, 50, 228) 0%, rgb(21, 195, 248));
+    margin-left: 20px;
   }
+  
+  .Town{
+    padding: 16px;
+    font-size: 3.8rem;
+  }
+  img{
+    width: 100%;
+  }
+  .iconImage{
+    width: 120px;
+    height: 120px;
+  }
+  .time , .lowerTemp{
+    font-size: 2rem;
+  }
+  .input{
+  width: 500px;
+  font-size: 1.8em;
+  display: flex;
+  justify-content: center;
+  margin: 5px;
+  }
+  form button{
+    width: 60px;
+    height: 60px;
+    font-size: 1.9em;
+  }
+  
+.Tempweather{
+  width: 90%;
+  height: fit-content;
+  margin: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: rgba(22, 21, 21, 0.4);
+}
 }
