@@ -12,7 +12,7 @@ const DayWeaather = () => {
     });
 
     useEffect(() => {
-        search('japan');
+        search('tokyo');
     }, []);
 
     const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
