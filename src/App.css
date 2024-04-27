@@ -152,6 +152,9 @@ form button{
   .days{
     display: none;
   }
+  .days{
+    display: none;
+  }
   .moreWeather{
     width: 100%;
     height: fit-content;
