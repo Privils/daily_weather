@@ -1,127 +1,128 @@
-import React, { useEffect, useState } from 'react';
-import clear_icon from '../waetherComponents/images/sun.png';
-import cloud_icon from '../waetherComponents/images/cloudy.png';
-import drizzle_icon from '../waetherComponents/images/drizzle.png';
-import rain_icon from '../waetherComponents/images/rain.png';
-import snow_icon from '../waetherComponents/images/snow.png';
-
+import React, { useEffect, useState } from "react";
+import { FaBars, FaMapMarkedAlt } from "react-icons/fa";
 
 const DayWeaather = () => {
-    const [weatherData, setWeatherData] = useState({
-        dailyForecasts: []
-    });
+    const [showInput, setShowInput] = useState(false);
+    const [displayData, setDisplayData] = useState(null);
+    const [search, setSearch] = useState("");
+    const [city, setCity] = useState("");
 
+    const apiKey = "4691f84a324dfa4a84b310180558ee28";
+
+    // Fetch weather data when `search` updates
     useEffect(() => {
-        search('tokyo');
-    }, []);
+        if (search) {
+            getData(search);
+        }
+    }, [search]);
 
-    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-
-    const search = async (searchValue) => {
-        const apiKey = process.env.REACT_APP_API_KEY;
-        const url = `https://api.openweathermap.org/data/2.5/forecast?q=${searchValue}&units=metric&appid=${apiKey}`;
+    const getData = async (cityName) => {
+        if (!cityName) return; // Prevent empty searches
+        const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
 
         try {
             const response = await fetch(url);
+            if (!response.ok) throw new Error("City not found");
+
             const data = await response.json();
-            console.log(data);
-            if (data.cod === '200') {
-                setWeatherData({
-                    location: data.city.name,
-                    dailyForecasts: data.list.filter(item => item.dt_txt.includes('12:00:00')).map(item => ({
-                        day: new Date(item.dt * 1000).getDay(),
-                        temperature: Math.round(item.main.temp),
-                        weatherIcon: getWeatherIcon(item.weather[0].icon)
-                    }))
-                });
-            } else {
-                console.error('Error fetching weather data:', data.message);
-                setWeatherData({
-                    location: 'City not found',
-                    dailyForecasts: []
-                });
-            }
+            setDisplayData(data);
         } catch (error) {
-            console.error('Error fetching weather data:', error);
+            console.error("Error fetching weather data:", error);
+            setDisplayData(null);
         }
     };
 
-    const getWeatherIcon = (iconCode) => {
-        switch (iconCode) {
-            case '01d':
-            case '01n':
-                return clear_icon;
-            case '02d':
-            case '02n':
-                return cloud_icon;
-            case '03d':
-            case '03n':
-                return drizzle_icon;
-            case '04d':
-            case '04n':
-                return drizzle_icon;
-            case '09d':
-            case '09n':
-                return rain_icon;
-            case '10d':
-            case '10n':
-                return rain_icon;
-            case '13d':
-            case '13n':
-                return snow_icon;
-            default:
-                return clear_icon; 
-        }
+    const handleSearch = (event) => {
+        event.preventDefault();
+        setSearch(city);
     };
 
-    const handleSearch = (e) => {
-        e.preventDefault();
-        const searchValue = e.target.elements.input.value;
-        search(searchValue);
-    };
-
-    const renderForecastForDay = (dayIndex) => {
-        const forecast = weatherData.dailyForecasts.find(forecast => forecast.day === dayIndex);
-        if (forecast) {
-            return (
-                <div className="weather" key={dayIndex}>
-                    <div className="Tempweather">
-                        <span className="time">{daysOfWeek[dayIndex]}</span>
-                        <div className="bottomImage">
-                            <img src={forecast.weatherIcon} alt="Weather Icon" className='iconImage' />
-                        </div>
-                        <span className="lowerTemp">{forecast.temperature}°C</span>
+    return (
+        <>
+            <main>
+                <section className="inside-container">
+                    <div className="header">
+                        <span className="country">
+                            <FaMapMarkedAlt /> {displayData?.name || "Search City"}
+                        </span>
+                        <form action="submit" onSubmit={handleSearch}>
+                            {showInput && (
+                                <input
+                                    type="text"
+                                    placeholder="Search location"
+                                    value={city}
+                                    onChange={(e) => setCity(e.target.value)}
+                                    required
+                                />
+                            )}
+                            <FaBars
+                                onClick={() => setShowInput(!showInput)}
+                                style={{ cursor: "pointer" }}
+                                className="bars"
+                            />
+                        </form>
                     </div>
-                </div>
-            );
-        }
-        return null;
-    };
-
-  return (
-  <>
-     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-            <section className="mainSection">
-                <form id="form" onSubmit={handleSearch}>
-                    <input className="input" type="text" placeholder="Please enter country name" name="input" />
-                    <button type="submit"><i className="fas fa-search"></i></button>
-                </form>
-                <div className="daysContainer">
-                    {daysOfWeek.map((day, index) => (
-                        <div className="days" key={index}>{day}</div>
-                    ))}
-                </div>
-                <div className="initialContainer">
-                    <h1 className="Town weather-location">{weatherData.location}</h1>
-                    <div className="bottomContent">
-                        <div className="moreWeather">
-                            {daysOfWeek.map((day, index) => renderForecastForDay(index))}
+                    <div className="container">
+                        <div className="temp">
+                            <span className="month">October</span>
+                            <span className="date">23</span>
+                            <span className="time">15:40</span>
+                            <p className="temperature">
+                                {displayData?.main?.temp ?? "--"}&deg;<span>C</span>
+                            </p>
+                            <div className="moderate">
+                                <span>{displayData?.main?.temp_max ?? "--"}&deg;</span>
+                                <span>{displayData?.main?.temp_min ?? "--"}&deg;</span>
+                            </div>
+                        </div>
+                        <p className="info">{displayData?.weather?.[0]?.description ?? "Unknown"}</p>
+                    </div>
+                    <div className="cover">
+                        <div className="analytics">
+                            <div>
+                                <span>23:00</span>
+                                <span>cloudy with less rain</span>
+                            </div>
+                            <div>
+                                <span>{displayData?.wind?.speed ?? "--"} km/h</span>
+                                <span>gentle breeze</span>
+                            </div>
+                            <div>
+                                <span>uvi {displayData?.uvi ?? "--"}</span>
+                                <span>wont harm your skin</span>
+                            </div>
                         </div>
                     </div>
-                </div>
-            </section>
-  </>
-  )
-}
+                    <div className="subContent">
+                        <h1>hourly forecast</h1>
+                        <div className="hourly-focust">
+                            <figure>
+                                <img src="" alt="" />
+                                <figcaption> 05:00 <br /> 33&deg;</figcaption>
+                            </figure>
 
-export default DayWeaather
+                            <figure>
+                                <img src="" alt="" />
+                                <figcaption> 05:00 <br /> 33&deg;</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="" alt="" />
+                                <figcaption> 05:00 <br /> 33&deg;</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="" alt="" />
+                                <figcaption> 05:00 <br /> 33&deg;</figcaption>
+                            </figure>
+                            <figure>
+                                <img src="" alt="" />
+                                <figcaption> 05:00 <br /> 33&deg;</figcaption>
+                            </figure>
+                        </div>
+                    </div>
+                </section>
+            </main>
+        </>
+    );
+};
+
+export default DayWeaather;
