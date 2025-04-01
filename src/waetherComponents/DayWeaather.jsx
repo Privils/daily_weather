@@ -8,9 +8,9 @@ const DayWeather = () => {
     const [city, setCity] = useState("");
     const [weeklyData, setWeeklyData] = useState([]);
 
-    const apiKey = "4691f84a324dfa4a84b310180558ee28"; // Replace with your actual API key
+    const apiKey = process.env.REACT_APP_API_KEY;
 
-    // Fetch weather data when `search` updates
+    // Fetching the  weather data when `search` updates
     useEffect(() => {
         if (search) {
             getData(search);
@@ -46,7 +46,7 @@ const DayWeather = () => {
             const geoRes = await fetch(geoUrl);
             const geoData = await geoRes.json();
     
-            console.log("GeoData Response:", geoData); // Debugging
+            console.log("GeoData Response:", geoData); 
     
             if (!geoData || geoData.length === 0) {
                 console.error("City not found in geolocation API response.");
@@ -56,12 +56,12 @@ const DayWeather = () => {
     
             const { lat, lon } = geoData[0];
     
-            // Fetch 5-day, 3-hour forecast
+            // Fetching data for a 5-day, 3-hour forecast
             const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
             const res = await fetch(url);
             const data = await res.json();
     
-            console.log("Weekly Weather Data:", data); // Debugging
+            console.log("Weekly Weather Data:", data);
     
             if (!data.list || !Array.isArray(data.list)) {
                 console.error("No valid forecast data:", data);
@@ -69,7 +69,7 @@ const DayWeather = () => {
                 return;
             }
     
-            // Extract one forecast per day (preferably at 12:00 PM)
+            // Extracting one forecast per day (preferably at 12:00 PM)
             const dailyData = data.list.filter((entry) => entry.dt_txt.includes("12:00:00"));
     
             setWeeklyData(dailyData);
@@ -175,6 +175,3 @@ const DayWeather = () => {
 
 export default DayWeather;
 
-
-
-//    const apiKey = "4691f84a324dfa4a84b310180558ee28";
