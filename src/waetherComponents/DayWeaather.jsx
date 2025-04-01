@@ -1,23 +1,25 @@
 import React, { useEffect, useState } from "react";
 import { FaBars, FaMapMarkedAlt } from "react-icons/fa";
 
-const DayWeaather = () => {
+const DayWeather = () => {
     const [showInput, setShowInput] = useState(false);
     const [displayData, setDisplayData] = useState(null);
-    const [search, setSearch] = useState("");
+    const [search, setSearch] = useState("cape town");
     const [city, setCity] = useState("");
+    const [weeklyData, setWeeklyData] = useState([]);
 
-    const apiKey = "4691f84a324dfa4a84b310180558ee28";
+    const apiKey = "4691f84a324dfa4a84b310180558ee28"; // Replace with your actual API key
 
     // Fetch weather data when `search` updates
     useEffect(() => {
         if (search) {
             getData(search);
+            getWeeklyData(search);
         }
     }, [search]);
 
     const getData = async (cityName) => {
-        if (!cityName) return; // Prevent empty searches
+        if (!cityName) return;
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
 
         try {
@@ -26,6 +28,7 @@ const DayWeaather = () => {
 
             const data = await response.json();
             setDisplayData(data);
+            console.log("Current weather data:", data);
         } catch (error) {
             console.error("Error fetching weather data:", error);
             setDisplayData(null);
@@ -37,6 +40,57 @@ const DayWeaather = () => {
         setSearch(city);
     };
 
+    const getWeeklyData = async (city) => {
+        try {
+            const geoUrl = `https://api.openweathermap.org/geo/1.0/direct?q=${city}&limit=1&appid=${apiKey}`;
+            const geoRes = await fetch(geoUrl);
+            const geoData = await geoRes.json();
+    
+            console.log("GeoData Response:", geoData); // Debugging
+    
+            if (!geoData || geoData.length === 0) {
+                console.error("City not found in geolocation API response.");
+                setWeeklyData([]);
+                return;
+            }
+    
+            const { lat, lon } = geoData[0];
+    
+            // Fetch 5-day, 3-hour forecast
+            const url = `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+            const res = await fetch(url);
+            const data = await res.json();
+    
+            console.log("Weekly Weather Data:", data); // Debugging
+    
+            if (!data.list || !Array.isArray(data.list)) {
+                console.error("No valid forecast data:", data);
+                setWeeklyData([]);
+                return;
+            }
+    
+            // Extract one forecast per day (preferably at 12:00 PM)
+            const dailyData = data.list.filter((entry) => entry.dt_txt.includes("12:00:00"));
+    
+            setWeeklyData(dailyData);
+        } catch (error) {
+            console.error("Error fetching weekly data:", error);
+            setWeeklyData([]);
+        }
+    };
+    
+
+
+
+
+
+    const daysOfWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+    const getDayOfWeek = (timestamp) => {
+        const date = new Date(timestamp * 1000);
+        return daysOfWeek[date.getDay()];
+    };
+
     return (
         <>
             <main>
@@ -45,7 +99,7 @@ const DayWeaather = () => {
                         <span className="country">
                             <FaMapMarkedAlt /> {displayData?.name || "Search City"}
                         </span>
-                        <form action="submit" onSubmit={handleSearch}>
+                        <form onSubmit={handleSearch}>
                             {showInput && (
                                 <input
                                     type="text"
@@ -72,7 +126,6 @@ const DayWeaather = () => {
                             </p>
                             <div className="moderate">
                                 <span>{displayData?.main?.temp_max ?? "--"}&deg;</span>
-                                <span>{displayData?.main?.temp_min ?? "--"}&deg;</span>
                             </div>
                         </div>
                         <p className="info">{displayData?.weather?.[0]?.description ?? "Unknown"}</p>
@@ -80,43 +133,38 @@ const DayWeaather = () => {
                     <div className="cover">
                         <div className="analytics">
                             <div>
-                                <span>23:00</span>
-                                <span>cloudy with less rain</span>
+                                <span>{displayData?.main?.humidity ?? "--"}%</span> <br />
+                                <span>Humidity</span>
                             </div>
                             <div>
-                                <span>{displayData?.wind?.speed ?? "--"} km/h</span>
-                                <span>gentle breeze</span>
+                                <span>{displayData?.wind?.speed ?? "--"} km/h</span> <br />
+                                <span>Wind Speed</span>
                             </div>
                             <div>
-                                <span>uvi {displayData?.uvi ?? "--"}</span>
-                                <span>wont harm your skin</span>
+                                <span>UVI {displayData?.uvi ?? "--"}</span>
+                                <span>Won't harm your skin</span>
                             </div>
                         </div>
                     </div>
                     <div className="subContent">
-                        <h1>hourly forecast</h1>
-                        <div className="hourly-focust">
-                            <figure>
-                                <img src="" alt="" />
-                                <figcaption> 05:00 <br /> 33&deg;</figcaption>
-                            </figure>
-
-                            <figure>
-                                <img src="" alt="" />
-                                <figcaption> 05:00 <br /> 33&deg;</figcaption>
-                            </figure>
-                            <figure>
-                                <img src="" alt="" />
-                                <figcaption> 05:00 <br /> 33&deg;</figcaption>
-                            </figure>
-                            <figure>
-                                <img src="" alt="" />
-                                <figcaption> 05:00 <br /> 33&deg;</figcaption>
-                            </figure>
-                            <figure>
-                                <img src="" alt="" />
-                                <figcaption> 05:00 <br /> 33&deg;</figcaption>
-                            </figure>
+                        <h1>Weekly Forecast</h1>
+                        <div className="weekly-forecast">
+                            {weeklyData?.length > 0 ? (
+                                weeklyData.map((day, index) => (
+                                    <figure key={index}>
+                                        <img
+                                            src={`https://openweathermap.org/img/wn/${day.weather[0].icon}.png`}
+                                            alt={day.weather[0].description}
+                                        />
+                                        <figcaption>
+                                            {getDayOfWeek(day.dt)} <br />
+                                            {Math.round(day.main.temp)}&deg;C
+                                        </figcaption>
+                                    </figure>
+                                ))
+                            ) : (
+                                <p>Loading weekly forecast...</p>
+                            )}
                         </div>
                     </div>
                 </section>
@@ -125,4 +173,8 @@ const DayWeaather = () => {
     );
 };
 
-export default DayWeaather;
+export default DayWeather;
+
+
+
+//    const apiKey = "4691f84a324dfa4a84b310180558ee28";
